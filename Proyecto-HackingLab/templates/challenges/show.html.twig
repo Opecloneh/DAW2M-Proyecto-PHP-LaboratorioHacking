@@ -1,0 +1,210 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ lab.title }} | VioletBox{% endblock %}
+{% block body %}
+<main>
+    <style>
+        /* Contenedor principal */
+        .lab-container {
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 25px 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+            color: #fff;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        /* Título */
+        .lab-container h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        /* Descripción */
+        .lab-container p {
+            font-size: 1rem;
+            color: #e0d3f8;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .lab-container strong {
+            color: #fff;
+        }
+
+        /* Formulario */
+        .lab-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .lab-form input[type="text"] {
+            padding: 0.6rem 1rem;
+            font-size: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid rgba(255,255,255,0.3);
+            margin-bottom: 1rem;
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+        }
+
+        .lab-form input[type="text"]::placeholder {
+            color: #e0d3f8;
+            opacity: 0.7;
+        }
+
+        .lab-form button {
+            padding: 0.6rem 1.2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            border: none;
+            background: #9b59b6;
+            color: #fff;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .lab-form button:hover {
+            background: #6a0dad;
+        }
+
+        /* Mensaje de éxito/error */
+        .alert {
+            margin-top: 1rem;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .alert-success {
+            background-color: #28a745;
+            color: #fff;
+        }
+
+        .alert-danger {
+            background-color: #e74c3c;
+            color: #fff;
+        }
+
+        /* Botón volver */
+        .btn-back {
+            margin-top: 5px;
+            width: 94.5%;
+            display: inline-block;
+            padding: 0.6rem 1.2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            border: none;
+            background: #7f8c8d; /* grisáceo */
+            color: #fff;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            text-decoration: none; /* para que no se vea subrayado */
+        }
+
+        .btn-back:hover {
+            background: #606f70; /* gris más oscuro al pasar el mouse */
+        }
+
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .lab-container {
+                margin: 20px 15px;
+                padding: 20px;
+            }
+
+            .lab-container h1 {
+                font-size: 1.5rem;
+            }
+        }
+
+        .lab-guide-box {
+            margin: 20px 0;
+            padding: 18px;
+            background: rgba(155, 89, 182, 0.1);
+            border-left: 4px solid #9b59b6;
+            border-radius: 0.5rem;
+        }
+
+        .lab-guide-box h3 {
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+
+        .btn-guide {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 0.5rem 1rem;
+            background: #9b59b6;
+            color: #fff;
+            border-radius: 0.4rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+
+        .btn-guide:hover {
+            background: #6a0dad;
+        }
+
+    </style>
+
+    <div class="lab-container">
+        <h1>{{ lab.title }}</h1>
+
+        <p>{{ lab.description }}</p>
+
+        <p>
+            <strong>Dificultad:</strong> {{ lab.difficulty }}
+        </p>
+
+        {% set guideRoute = '' %}
+
+        {% if lab.id == 1 %}
+            {% set guideRoute = path('app_tutorial', {vuln: 'sql-injection'}) %}
+        {% elseif lab.id == 2 %}
+            {% set guideRoute = path('app_tutorial', {vuln: 'xss'}) %}
+        {% elseif lab.id == 3 %}
+            {% set guideRoute = path('app_tutorial', {vuln: 'idor'}) %}
+        {% elseif lab.id == 4 %}
+            {% set guideRoute = path('app_tutorial', {vuln: 'file-upload'}) %}
+        {% endif %}
+
+        {% if guideRoute %}
+            <div class="lab-guide-box">
+                <h3>📘 Guía recomendada</h3>
+                <p>
+                    Si necesitas ayuda teórica antes de resolver este laboratorio,
+                    puedes consultar nuestra guía explicativa.
+                </p>
+                <a href="{{ guideRoute }}" class="btn-guide">
+                    Ir a la guía
+                </a>
+            </div>
+        {% endif %}
+
+
+        <form class="lab-form" method="post" action="{{ path('laboratory_submit', {id: lab.id}) }}">
+            <input type="text" name="payload" placeholder="Introduce tu respuesta..." required>
+            <button type="submit">Enviar</button>
+        </form>
+
+        {% if success is defined %}
+            <div class="alert alert-success">{{ success }}</div>
+        {% elseif error is defined %}
+            <div class="alert alert-danger">{{ error }}</div>
+        {% endif %}
+
+        <a href="{{ path('app_challenges') }}" class="btn-back">Volver</a>
+    </div>
+</main>
+{% endblock %}

@@ -1,0 +1,55 @@
+security:
+    # -----------------------------
+    # Cómo Symfony hashará las contraseñas
+    # -----------------------------
+    password_hashers:
+        App\Entity\User: 'auto'
+
+    # -----------------------------
+    # Cómo se cargan los usuarios
+    # -----------------------------
+    providers:
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: username
+
+    # -----------------------------
+    # Firewalls
+    # -----------------------------
+    firewalls:
+        dev:
+            # Solo si estás en dev, para profiler, etc.
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            provider: app_user_provider
+            form_login:
+                login_path: login
+                check_path: login
+                username_parameter: _username
+                password_parameter: _password
+                default_target_path: app_index
+            logout:
+                path: /logout
+                target: /login
+            # No necesitamos lazy true aquí, simplifica debug
+
+    # -----------------------------
+    # Control de acceso a rutas
+    # -----------------------------
+    access_control:
+        - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/register, roles: PUBLIC_ACCESS }
+        - { path: ^/challenges, roles: ROLE_USER }
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/, roles: ROLE_USER }
+
+# -----------------------------
+# Configuración para test
+# -----------------------------
+when@test:
+    security:
+        password_hashers:
+            App\Entity\User: 'auto'

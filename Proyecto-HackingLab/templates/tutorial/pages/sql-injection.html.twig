@@ -1,0 +1,149 @@
+<style>
+
+    .wiki-external-guide {
+        margin-top: 40px;
+        padding: 20px;
+        background: rgba(155, 89, 182, 0.1);
+        border-left: 4px solid #9b59b6;
+        border-radius: 6px;
+    }
+
+    .wiki-external-guide h3 {
+        margin-top: 0;
+        color: #fff;
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+    }
+
+    .wiki-external-guide p {
+        margin: 0;
+        color: #e0d3f8;
+    }
+
+    .wiki-external-guide a {
+        color: rgba(255, 192, 203);
+        font-weight: bold;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .wiki-external-guide a:hover {
+            color: #ffffff;
+            text-decoration: underline;
+    }
+
+    .wiki-separator {
+        margin: 30px 0;
+        opacity: 0.2;
+    }
+
+    .solution-button {
+        background: #9b59b6;
+        color: #fff;
+        border: none;
+        padding: 10px 18px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .solution-button:hover {
+        background: #6a0dad;
+    }
+
+    .solution-box {
+        display: none;
+        margin-top: 20px;
+        background: rgba(46, 204, 113, 0.15);
+        padding: 20px;
+        border-radius: 8px;
+        border: 1px solid #2ecc71;
+    }
+
+</style>
+
+<h1>💉 SQLi Login – Login Bypass</h1>
+
+<p><strong>Dificultad:</strong> Fácil</p>
+
+<p>
+    En este laboratorio debes realizar un <strong>Login Bypass</strong> utilizando una vulnerabilidad de
+    <strong>SQL Injection</strong>.
+</p>
+
+<hr class="wiki-separator">
+
+<h2>🧠 ¿Qué está pasando?</h2>
+
+<p>
+    El formulario de login probablemente construye una consulta SQL similar a esta:
+</p>
+
+<pre>
+SELECT * FROM users
+WHERE username = 'INPUT_USER'
+AND password = 'INPUT_PASS';
+</pre>
+
+<p>
+    Si la aplicación no filtra correctamente los datos introducidos, podemos modificar la consulta original.
+</p>
+
+<hr class="wiki-separator">
+
+<h2>🎯 Objetivo</h2>
+
+<p>
+    Conseguir acceso sin conocer usuario ni contraseña válidos.
+</p>
+
+<hr class="wiki-separator">
+
+<h2>🚨 Explotación</h2>
+
+<p>
+    Piensa qué pasaría si consigues que la condición del <code>WHERE</code> siempre sea verdadera…
+</p>
+
+<hr class="wiki-separator">
+
+<h2>🔐 Solución</h2>
+
+<button onclick="document.getElementById('solucion-sqli').style.display='block'; this.style.display='none';"
+        class="solution-button">
+    Mostrar solución
+</button>
+
+<div id="solucion-sqli" class="solution-box">
+
+    <p><strong>Payload utilizado:</strong></p>
+
+    <pre>' OR 1=1 -- </pre>
+
+    <p>
+        Este payload fuerza que la condición sea siempre verdadera.
+        El comentario <code>--</code> ignora el resto de la consulta.
+    </p>
+
+</div>
+
+<hr class="wiki-separator">
+
+<h2>🛡 ¿Cómo se previene?</h2>
+
+<ul>
+    <li>Uso de <strong>consultas preparadas (prepared statements)</strong></li>
+    <li>Uso de ORM (Doctrine)</li>
+    <li>Validación de entradas</li>
+    <li>Principio de mínimo privilegio en la base de datos</li>
+</ul>
+
+<div class="wiki-external-guide">
+    <h3>📖 Más información</h3>
+    <p>
+        Consulta la guía profesional de PortSwigger para profundizar en esta vulnerabilidad:
+        <a href="https://portswigger.net/web-security/sql-injection" target="_blank">
+            Ver guía completa
+        </a>
+    </p>
+</div>

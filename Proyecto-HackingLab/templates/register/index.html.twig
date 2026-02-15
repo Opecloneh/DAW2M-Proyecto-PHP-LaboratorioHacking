@@ -1,0 +1,141 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register | VioletBox{% endblock %}
+
+{% block body %}
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #6a0dad, #9b59b6);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
+        }
+
+        .login-box {
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255, 192, 203, 0.35);
+        }
+
+        .login-box h2 {
+            margin-top: -15px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .login-box label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            width: 90%;
+            margin-left: 2%;
+            color: #ffffffcc;
+        }
+
+        .login-box input {
+            display: block;
+            margin: 0 auto 18px;
+            width: 90%;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            font-size: 1rem;
+            transition: background 0.5s;
+        }
+
+        .login-box input:focus {
+            background: rgba(255, 255, 255, 0.2);
+            outline: 2px solid rgba(255, 192, 203, 0.35);
+        }
+
+        .login-box button {
+            width: 100%;
+            padding: 12px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 192, 203, 0.35);
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.5s;
+        }
+
+        .login-box button:hover {
+            background: #6a0dad;
+        }
+
+        .login-box p {
+            margin-top: 10px;
+            margin-bottom: -15px;
+            text-align: center;
+        }
+
+        a {
+            color: rgba(255, 192, 203);
+        }
+
+        /* Estilo de errores de formulario */
+        .form-error-message, .form-errors {
+            color: #ff6b6b;
+            background: rgba(0,0,0,0.2);
+            border-radius: 5px;
+            padding: 6px 10px;
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+        }
+    </style>
+
+    <main>
+        <div class="login-box">
+            <h2>Crear Cuenta</h2>
+
+            {# Mostrar flashes #}
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-danger">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
+            {{ form_start(formulario) }}
+
+            {# Errores generales del formulario #}
+            {{ form_errors(formulario) }}
+
+            {# Campos individuales #}
+            {{ form_row(formulario.username) }}
+            {{ form_row(formulario.email) }}
+            {{ form_row(formulario.password.first) }}
+            {{ form_row(formulario.password.second) }}
+            {{ form_row(formulario.birthDate) }}
+
+            {{ form_row(formulario.register) }}
+
+            {{ form_end(formulario) }}
+
+            <p style="text-align:center; margin-top: 15px;">
+                ¿Ya tienes cuenta?
+                <a href="{{ path('login') }}" style="color: #f0c3ff; text-decoration: underline;">Inicia sesión aquí</a>
+            </p>
+        </div>
+    </main>
+{% endblock %}

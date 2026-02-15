@@ -1,0 +1,194 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administrar Usuarios{% endblock %}
+
+{% block body %}
+    <style>
+
+        .admin-container {
+            padding: 50px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .admin-card {
+            background: rgba(255,255,255,0.08);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+        }
+
+        .admin-title {
+            margin-top: 0;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+
+        .admin-button {
+            display: inline-block;
+            padding: 12px 22px;
+            background: #9b59b6;
+            color: #fff;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .admin-button:hover {
+            background: #6a0dad;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        .admin-table thead {
+            background: rgba(155, 89, 182, 0.3);
+        }
+
+        .admin-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .admin-table td {
+            padding: 14px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.95rem;
+            color: #f3eaff;
+        }
+
+        .admin-table tbody tr {
+            transition: background 0.2s ease;
+        }
+
+        .admin-table tbody tr:hover {
+            background: rgba(255,255,255,0.08);
+        }
+
+        .role-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            background: rgba(46, 204, 113, 0.2);
+            border: 1px solid #2ecc71;
+        }
+
+        .action-link {
+            color: #f0c3ff;
+            text-decoration: none;
+            margin-right: 12px;
+            transition: color 0.2s;
+            font-weight: 500;
+        }
+
+        .action-link:hover {
+            color: #ffffff;
+        }
+
+        .delete-button {
+            background: none;
+            border: none;
+            color: #e74c3c;
+            cursor: pointer;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .delete-button:hover {
+            color: #ff6b6b;
+        }
+
+        .alert-success {
+            background: rgba(46, 204, 113, 0.2);
+            border: 1px solid #2ecc71;
+            padding: 12px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+    </style>
+
+    <main class="admin-container">
+        <div class="admin-card">
+
+            <h2 class="admin-title">👑 Panel de Administración</h2>
+
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert-{{ label == 'success' ? 'success' : 'danger' }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
+            <a href="{{ path('admin_user_new') }}" class="admin-button">
+                ➕ Crear nuevo usuario
+            </a>
+
+            <table class="admin-table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Roles</th>
+                    <th>Fecha Nacimiento</th>
+                    <th>Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>#{{ user.id }}</td>
+                        <td><strong>{{ user.username }}</strong></td>
+                        <td>{{ user.email }}</td>
+                        <td>
+                            {% for role in user.roles %}
+                                <span class="role-badge">{{ role }}</span>
+                            {% endfor %}
+                        </td>
+                        <td>{{ user.birthDate ? user.birthDate|date('Y-m-d') : '-' }}</td>
+                        <td>
+                            <a href="{{ path('admin_user_edit', {'id': user.id}) }}" class="action-link">
+                                ✏ Editar
+                            </a>
+
+                            {% if user.username|lower != 'admin' %}
+                                <form method="post"
+                                      action="{{ path('admin_user_delete', {'id': user.id}) }}"
+                                      style="display:inline;">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                                    <button type="submit" class="delete-button">
+                                        🗑 Borrar
+                                    </button>
+                                </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6" style="text-align:center; padding:25px;">
+                            No hay usuarios registrados.
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </main>
+
+{% endblock %}

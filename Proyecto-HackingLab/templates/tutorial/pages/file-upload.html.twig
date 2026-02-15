@@ -1,0 +1,158 @@
+<style>
+
+    .wiki-external-guide {
+        margin-top: 40px;
+        padding: 20px;
+        background: rgba(155, 89, 182, 0.1);
+        border-left: 4px solid #9b59b6;
+        border-radius: 6px;
+    }
+
+    .wiki-external-guide h3 {
+        margin-top: 0;
+        color: #fff;
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+    }
+
+    .wiki-external-guide p {
+        margin: 0;
+        color: #e0d3f8;
+    }
+
+    .wiki-external-guide a {
+        color: rgba(255, 192, 203);
+        font-weight: bold;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .wiki-external-guide a:hover {
+        color: #6a0dad;
+    }
+
+    .wiki-separator {
+        margin: 30px 0;
+        opacity: 0.2;
+    }
+
+    .solution-button {
+        background: #9b59b6;
+        color: #fff;
+        border: none;
+        padding: 10px 18px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .solution-button:hover {
+        background: #6a0dad;
+    }
+
+    .solution-box {
+        display: none;
+        margin-top: 20px;
+        background: rgba(46, 204, 113, 0.15);
+        padding: 20px;
+        border-radius: 8px;
+        border: 1px solid #2ecc71;
+    }
+
+</style>
+
+<h1>📤 File Upload Inseguro</h1>
+
+<p><strong>Dificultad:</strong> Media</p>
+
+<p>
+    En este laboratorio debes explotar una vulnerabilidad de <strong>subida de archivos insegura</strong>.
+</p>
+
+<p>
+    La aplicación permite subir archivos con extensión <code>.jpg</code>, pero no valida correctamente
+    el contenido real del archivo.
+</p>
+
+<hr class="wiki-separator">
+
+<h2>🧠 ¿Qué está pasando?</h2>
+
+<p>
+    Muchas aplicaciones solo comprueban la <strong>extensión del archivo</strong> y no su contenido real.
+</p>
+
+<p>
+    Si el servidor únicamente revisa que el nombre termine en <code>.jpg</code>,
+    podrías intentar subir un archivo que contenga código ejecutable disfrazado como imagen.
+</p>
+
+<p>
+    En servidores mal configurados, esto puede permitir la ejecución remota de código.
+</p>
+
+<hr class="wiki-separator">
+
+<h2>🎯 Objetivo</h2>
+
+<p>
+    Vulnerar el sistema de subida de archivos utilizando tu webshell:
+</p>
+
+<pre>
+shell.php
+</pre>
+
+<p>
+    Debes conseguir que el servidor acepte el archivo aunque solo permita <code>.jpg</code>.
+</p>
+
+<hr class="wiki-separator">
+
+<h2>🔐 Solución</h2>
+
+<button onclick="document.getElementById('solucion-upload').style.display='block'; this.style.display='none';"
+        class="solution-button">
+    Mostrar solución
+</button>
+
+<div id="solucion-upload" class="solution-box">
+
+    <p><strong>Nombre de archivo utilizado:</strong></p>
+
+    <pre>
+shell.php.jpg
+    </pre>
+
+    <p>
+        Al añadir <code>.jpg</code> al final, el sistema valida la extensión como imagen,
+        pero el servidor puede interpretar el archivo como PHP dependiendo de su configuración.
+    </p>
+
+    <p>
+        Esto demuestra que confiar únicamente en la extensión del archivo no es una medida de seguridad válida.
+    </p>
+
+</div>
+
+<hr class="wiki-separator">
+
+<h2>🛡 ¿Cómo se previene?</h2>
+
+<ul>
+    <li>Validar el tipo MIME real del archivo</li>
+    <li>Revisar el contenido del archivo (magic bytes)</li>
+    <li>Renombrar archivos subidos con nombres aleatorios</li>
+    <li>Almacenar archivos fuera del directorio público</li>
+    <li>Deshabilitar la ejecución de código en carpetas de subida</li>
+</ul>
+
+<div class="wiki-external-guide">
+    <h3>📖 Más información</h3>
+    <p>
+        Consulta la guía profesional de PortSwigger para profundizar en esta vulnerabilidad:
+        <a href="https://portswigger.net/web-security/file-upload" target="_blank">
+            Ver guía completa
+        </a>
+    </p>
+</div>

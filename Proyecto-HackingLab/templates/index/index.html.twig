@@ -1,0 +1,122 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inicio | VioletBox{% endblock %}
+
+{% block body %}
+    <style>
+        body {
+            margin: 0;
+            background: linear-gradient(135deg, #6a0dad, #9b59b6);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 🔥 Bloque central (mantiene tu estilo anterior) */
+        .main-center {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;   /* centrado vertical */
+            align-items: center;       /* centrado horizontal */
+            text-align: center;
+            padding: 20px;
+        }
+
+        .main-center h1 {
+            font-weight: bolder;
+            margin-bottom: 10px; /* como tenías antes */
+        }
+
+        .main-center h2 {
+            font-weight: normal;
+            margin: 0 0 20px 0;
+            max-width: 600px;
+        }
+
+        /* 🎯 Botón igual que antes */
+        .cta-button {
+            background: #9b59b6;
+            color: #fff;
+            border: none;
+            padding: 20px 35px;
+            font-size: 1.5rem;
+            font-weight: bolder;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: background 0.3s;
+            text-decoration: none;
+        }
+
+        .cta-button:hover {
+            background: #6a0dad;
+        }
+
+        /* ⭐ Estrellas con tu estilo original */
+        .achievement-stars {
+            text-align: center;
+            margin: 10px 0 20px 0;
+            font-size: 1.7rem;
+        }
+
+        .achievement-stars span {
+            font-size: 2.5rem;
+        }
+
+        .progress-text {
+            margin-left: 10px;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .completed-msg {
+            margin-top: 15px;
+            color: #f0c3ff;
+            font-weight: bold;
+        }
+
+
+
+    </style>
+    <main>
+        <div class="main-center">
+            {% if app.user %}
+                <h1>Bienvenido, {{ app.user.username }}!</h1>
+            {% endif %}
+
+            <h2>Aquí podrás empezar a aprender hacking web con desafíos de seguridad.</h2>
+
+            <a class="cta-button" href="{{path('app_challenges')}}">
+                Entrar
+            </a>
+        </div>
+
+        <div class="achievement-stars">
+            {% for i in 1..totalChallenges %}
+                {% if i <= completedCount %}
+                    <span style="color: gold;">★</span>
+                {% else %}
+                    <span style="color: white;">☆</span>
+                {% endif %}
+            {% endfor %}
+
+            <span class="progress-text">
+            {{ completedCount }}/{{ totalChallenges }} desafíos completados
+        </span>
+
+            {% if completedCount == 4 %}
+                <div class="completed-msg">
+                    Felicidades, has completado VioletBox!!
+                </div>
+            {% endif %}
+        </div>
+    </main>
+
+{% endblock %}

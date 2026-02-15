@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}VioletBox{% endblock %}</title>
+    <style>
+        /* Solo CSS de header y footer */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+        body {
+            margin: 0;
+            font-family: 'Roboto', Serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #6a0dad, #9b59b6);
+            color: #fff;
+        }
+        main {
+            flex: 1; /* Esto hace que el main ocupe todo el espacio restante */
+        }
+        header {
+            background: linear-gradient(135deg, #6a0dad, #9b59b6);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: 500;
+            font-size:1.2rem;
+        }
+
+        nav a:hover {
+            color: #f0c3ff;
+        }
+
+        footer {
+            background: linear-gradient(135deg, #6a0dad, #9b59b6);
+            padding: 30px 40px;
+            text-align: center;
+
+        }
+
+        footer .socials a {
+            color: #f0c3ff;
+            margin: 0 10px;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        footer .socials a:hover {
+            color: #fff;
+        }
+        .alert-danger {
+            background-color: rgba(231, 76, 60, 0.85); /* rojo semi-transparente */
+            color: #fff;                               /* texto blanco */
+            border-radius: 10px;                        /* esquinas redondeadas */
+            padding: 12px 20px;                         /* espacio interno */
+            margin-bottom: 20px;                        /* espacio debajo */
+            text-align: center;                          /* centrar texto */
+            font-weight: 500;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);    /* sombra suave */
+            animation: shake 0.3s ease;                 /* opcional: un pequeño efecto */
+        }
+
+        /* Efecto “shake” opcional cuando hay error */
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>VioletBox</h1>
+    <nav>
+        <a href="{{ path('app_index') }}">Inicio</a>
+        {% if app.user %}
+            <a href="{{ path('app_challenges') }}">Desafíos</a>
+            <a href="{{ path('app_tutorial') }}">Tutoriales</a>
+            <a href="{{ path('app_contact') }}">Contacto</a>
+            {% if app.user and is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('admin_users') }}">Admin</a>
+            {% endif %}
+
+
+        {% else %}
+            <a>??</a>
+            <a>??</a>
+            <a>??</a>
+        {% endif %}
+
+        {% if app.user %}
+            <a href="{{ path('app_logout') }}">Log Out</a>
+        {% else %}
+            <a href="{{ path('login') }}">Login</a>
+        {% endif %}
+
+    </nav>
+</header>
+
+{% block body %}{% endblock %}
+
+<footer>
+    <p>Alvaro Castillero 2ºDAW 2025-2026</p>
+    <p>&copy; VioletBox</p>
+    <div class="socials">
+        <a href="https://github.com/Opecloneh" target="_blank">GitHub</a>
+    </div>
+</footer>
+</body>
+</html>

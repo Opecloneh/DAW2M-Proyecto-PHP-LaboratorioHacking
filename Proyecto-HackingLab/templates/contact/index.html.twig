@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contacto | VioletBox{% endblock %}
+
+{% block body %}
+<style>
+    .contact-container {
+        text-align: center;
+        padding: 60px 20px;
+        max-width: 800px;
+        margin: 0 auto;
+        color: #fff;
+    }
+
+    .contact-container h1 {
+        margin-bottom: 30px;
+        font-size: 2rem;
+    }
+
+    .contact-container p {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+
+    .contact-container hr {
+        margin: 40px auto;
+        width: 60%;
+        opacity: 0.3;
+        border: none;
+        border-top: 1px solid #fff;
+    }
+
+    .email-text {
+        margin-top: 30px;
+    }
+
+    .email-link {
+        color: #f0c3ff;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .email-link:hover {
+        color: #ffffff;
+        text-decoration: underline;
+    }
+
+    .git-link {
+        color: #f0c3ff;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .git-link:hover {
+        color: #ffffff;
+        text-decoration: underline;
+    }
+
+</style>
+
+    <main class="contact-container">
+
+        <h1>Contacto</h1>
+
+        <p>
+            Hola, soy <strong>Álvaro Castillero</strong>, estudiante de 2º de DAW.
+            Llevo varios años estudiando hacking por mi cuenta y formándome en seguridad informática.
+            Mi objetivo es convertirme en <strong>pentester</strong> en el futuro y seguir desarrollando
+            mis habilidades en pruebas de seguridad y desarrollo web.
+        </p>
+
+        <p>
+            Este proyecto forma parte de mi aprendizaje y práctica en hacking web y desarrollo de retos de seguridad.
+        </p>
+
+        <hr>
+
+        <p>Puedes encontrar más de mis proyectos en:</p>
+
+        <a href="https://github.com/Opecloneh" target="_blank" class="cta-button git-link">
+            GitHub
+        </a>
+
+        <p class="email-text">
+            O contactarme por correo:
+            <br>
+            <a href="mailto:acassar@g.educaand.es" class="email-link">
+                acassar@g.educaand.es
+            </a>
+        </p>
+
+    </main>
+
+
+
+{% endblock %}

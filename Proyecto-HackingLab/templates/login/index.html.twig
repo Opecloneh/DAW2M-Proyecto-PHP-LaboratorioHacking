@@ -1,0 +1,123 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Login | VioletBox{% endblock %}
+
+{% block body %}
+    <style>
+        /* Labels dentro del login-box */
+        .login-box label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #ffffffcc;
+        }
+
+        .login-box input:focus + label {
+            color: #f0c3ff; /* color más claro cuando el input está activo */
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-box {
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255, 192, 203, 0.35);
+        }
+
+        .login-box h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        .login-box label {
+            display: block;
+            margin-bottom: 8px;  /* solo espacio debajo del label */
+            font-weight: 500;
+            width: 90%;          /* igual que el input */
+            margin-left: 2%;
+        }
+
+        .login-box input {
+            display: block;
+            margin: 0 auto 18px; /* centrado horizontalmente */
+            width: 90%;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            font-size: 1rem;
+            transition: background 0.5s;
+        }
+        .login-box input:focus {
+            background: rgba(255, 255, 255, 0.2);
+            outline: 2px solid rgba(255, 192, 203, 0.35);
+        }
+        .login-box button {
+            width: 100%;
+            padding: 12px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 192, 203, 0.35);
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.5s;
+        }
+
+        .login-box button:hover {
+            background: #6a0dad;
+        }
+        a{
+            color: rgba(255, 192, 203);
+        }
+
+
+    </style>
+
+    <main>
+        <div class="login-box">
+            <h2>Iniciar sesión</h2>
+
+            {% if error %}
+                <div class="alert alert-danger">
+                    {% if error.messageKey == 'Invalid credentials.' %}
+                        Usuario o contraseña incorrectos
+                    {% else %}
+                        {{ error.messageKey|trans(error.messageData, 'security') }}
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            <form action="{{ path('login') }}" method="post">
+                <label>Usuario</label>
+                <input type="text" name="_username" value="{{ last_username }}" required>
+
+                <label>Contraseña</label>
+                <input type="password" name="_password" required>
+
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                <button type="submit">Entrar</button>
+            </form>
+
+            <p style="text-align:center; margin-top:15px;">
+                ¿No tienes cuenta? <a href="{{ path('app_register') }}">Regístrate aquí</a>
+            </p>
+
+
+        </div>
+    </main>
+
+{% endblock %}

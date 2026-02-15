@@ -1,0 +1,136 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Desafíos | VioletBox{% endblock %}
+
+{% block body %}
+<style>
+    main {
+        flex: 1; /* ocupa todo el espacio disponible del body */
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* centra verticalmente */
+        align-items: center;     /* centra horizontalmente */
+        padding: 20px;
+    }
+
+    /* Grid de cards */
+    .challenge-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        padding: 20px 40px;
+        align-items: stretch;
+    }
+
+    /* Card estilo Bootstrap */
+    .card {
+        background-color: rgba(255, 255, 255, 0.05); /* fondo semi-transparente violeta */
+        border: 1px solid rgba(255, 255, 255, 0.2); /* borde sutil */
+        border-radius: 0.5rem; /* esquinas redondeadas tipo Bootstrap */
+        box-shadow: 0 4px 6px rgba(0,0,0,0.2); /* sombra */
+        padding: 1.5rem; /* padding interior */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 220px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        max-width: 600px;       /* ancho máximo */
+        width: 100%;            /* ocupa 100% de la columna */
+        margin: 20px;         /* centra la card en la columna */
+    }
+
+    /* Hover estilo Bootstrap */
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    }
+
+    /* Título */
+    .card h1 {
+        margin-bottom: 0.5rem;
+        color: #fff;
+    }
+
+    /* Párrafo */
+    .card p {
+        flex-grow: 1;
+        color: #e0d3f8;
+        font-weight: 500;
+        font-size: 1.2rem;
+        margin-bottom: 0.2rem;
+    }
+    .card span {
+        font-size: 1rem;
+    }
+    .card h2 {
+        flex-grow: 1;
+        margin-bottom: 0.2rem;
+    }
+
+    /* Badges estilo Bootstrap */
+    .badge {
+        display: inline-block;
+        padding: 1em 0.65em;
+        font-size: 0.8rem;
+        font-weight: 600;
+        border-radius: 0.5rem;
+        margin-bottom: 0.75rem;
+        margin-top: 0.75rem;
+    }
+
+    .badge-success {
+        background-color: #28a745;
+        color: #fff;
+    }
+
+    .badge-warning {
+        background-color: #dc3545;
+        color: #fff;
+    }
+
+    /* Botón estilo Bootstrap */
+    .card a {
+        display: inline-block;
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        background: #9b59b6;
+        color: #fff;
+        font-weight: 600;
+        text-align: center;
+        border-radius: 0.5rem;
+        transition: background 0.3s ease;
+    }
+
+    .card a:hover {
+        background: #6a0dad;
+    }
+
+    /* Responsive: 1 columna en móvil */
+    @media (max-width: 768px) {
+        .challenge-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    </style>
+    <main>
+    <div class="challenge-grid">
+        {% for lab in labs %}
+            <div class="card">
+                <h1>{{ lab.title }}</h1>
+                <h2>Dificultad: {{ lab.difficulty }}</h2>
+                <p>Descripcion del laboratorio: {{ lab.description }}</p>
+                {% if completedLabs[lab.id] is defined %}
+                    <span class="badge badge-success">✓ Completado</span>
+                {% else %}
+                    <span class="badge badge-warning">✗ Sin Completar</span>
+                {% endif %}
+
+                <a href="{{ path('laboratory_show', {id: lab.id}) }}">
+                    Entrar
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+    </main>
+{% endblock %}
