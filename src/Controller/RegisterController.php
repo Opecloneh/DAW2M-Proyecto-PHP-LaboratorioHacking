@@ -43,18 +43,14 @@ class RegisterController extends AbstractController
             // -----------------------------
             // Roles automáticos
             // -----------------------------
-            // Opción 1: Primer usuario registrado → admin
+            // Usuario registrado con nombre 'admin', tiene rol admin
             $userCount = $em->getRepository(User::class)->count([]);
-            if ($userCount === 0) {
-                $usuario->setRoles(['ROLE_ADMIN']);
-            }
-            // Opción 2: Si el username es "admin" → admin (solo para localhost, seguro aquí)
-            elseif (strtolower($usuario->getUsername()) === 'admin') {
-                $usuario->setRoles(['ROLE_ADMIN']);
-            }
-            else {
-                $usuario->setRoles(['ROLE_USER']);
-            }
+           if (strtolower($usuario->getUsername()) === 'admin') {
+               $usuario->setRoles(['ROLE_ADMIN']);
+           } else {
+               $usuario->setRoles(['ROLE_USER']);
+        }
+
 
             $em->persist($usuario);
             $em->flush();
