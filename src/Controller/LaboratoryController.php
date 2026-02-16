@@ -20,22 +20,22 @@ class LaboratoryController extends AbstractController
         ProgressRepository $progressRepo
     ): Response
     {
-        $lab = $labRepo->find($id);
+        $lab = $labRepo->find($id); // Buscar laboratorio por ID
         if (!$lab) {
-            throw $this->createNotFoundException('Laboratorio no encontrado');
+            throw $this->createNotFoundException('Laboratorio no encontrado'); // Si no existe, lanzar 404
         }
 
-        $user = $this->getUser();
-        $completed = false;
+        $user = $this->getUser(); // Obtener usuario logueado
+        $completed = false; // Inicializar como no completado
 
         if ($user) {
-            $progress = $progressRepo->findOneBy(['user' => $user, 'laboratory' => $lab]);
-            $completed = $progress ? $progress->isCompleted() : false;
+            $progress = $progressRepo->findOneBy(['user' => $user, 'laboratory' => $lab]); // Buscar progreso del usuario
+            $completed = $progress ? $progress->isCompleted() : false; // Verificar si ya completó
         }
 
         return $this->render('challenges/show.html.twig', [
-            'lab' => $lab,
-            'completed' => $completed,
+            'lab' => $lab, // Pasar laboratorio a la vista
+            'completed' => $completed, // Pasar estado de completado
         ]);
     }
 
@@ -48,29 +48,29 @@ class LaboratoryController extends AbstractController
         EntityManagerInterface $em
     ): Response
     {
-        $lab = $labRepo->find($id);
-        $user = $this->getUser();
+        $lab = $labRepo->find($id); // Buscar laboratorio por ID
+        $user = $this->getUser(); // Obtener usuario logueado
 
         if (!$lab || !$user) {
-            throw $this->createNotFoundException();
+            throw $this->createNotFoundException(); // Si no existe laboratorio o usuario, 404
         }
 
-        $payload = $request->request->get('payload');
-        $isCorrect = trim(strtolower($payload)) === trim(strtolower($lab->getSolution()));
+        $payload = $request->request->get('payload'); // Obtener respuesta enviada por formulario
+        $isCorrect = trim(strtolower($payload)) === trim(strtolower($lab->getSolution())); // Comparar con solución
 
-        $progress = $progressRepo->findOneBy(['user' => $user, 'laboratory' => $lab]) ?? new Progress();
+        $progress = $progressRepo->findOneBy(['user' => $user, 'laboratory' => $lab]) ?? new Progress(); // Buscar progreso o crear uno nuevo
         if (!$progress->getId()) {
-            $progress->setUser($user)->setLaboratory($lab);
+            $progress->setUser($user)->setLaboratory($lab); // Asignar usuario y laboratorio si es nuevo
         }
 
-        $progress->setCompleted($isCorrect);
-        $em->persist($progress);
-        $em->flush();
+        $progress->setCompleted($isCorrect); // Marcar como completado si es correcto
+        $em->persist($progress); // Preparar para guardar
+        $em->flush(); // Guardar en la base de datos
 
         return $this->render('challenges/show.html.twig', [
-            'lab' => $lab,
-            'completed' => $isCorrect,
-            $isCorrect ? 'success' : 'error' => $isCorrect ? '¡Correcto! Has completado el laboratorio 💜' : 'Respuesta incorrecta, inténtalo de nuevo'
+            'lab' => $lab, // Pasar laboratorio a la vista
+            'completed' => $isCorrect, // Indicar si está completado
+            $isCorrect ? 'success' : 'error' => $isCorrect ? '¡Correcto! Has completado el laboratorio 💜' : 'Respuesta incorrecta, inténtalo de nuevo' // Mensaje dinámico según resultado
         ]);
     }
 }
